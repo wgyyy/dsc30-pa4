@@ -230,7 +230,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
      */
     @Override
     public T get(int index) throws IndexOutOfBoundsException {
-        if (index>this.size()){
+        if (index>this.size() || this.size()==0){
             throw new IndexOutOfBoundsException();
         }
         return this.getNth(index).data;
@@ -299,6 +299,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
         if (thisNode==tail){
             tail=prevNode;
         }
+        this.nelems--;
         return thisNode.data;
     }
 

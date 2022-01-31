@@ -1,13 +1,15 @@
 /*
- * NAME: TODO
- * PID: TODO
+ * NAME: Gaoying Wang
+ * PID: A16131629
  */
 
+import java.awt.*;
+
 /**
- * TODO
+ * This class is designed for scheduling the completion of several tasks.
  *
- * @author TODO
- * @since TODO
+ * @author Gaoying Wang
+ * @since ${2020-01-30}
  */
 public class RoundRobin {
 
@@ -19,16 +21,65 @@ public class RoundRobin {
     private int quantum, burstTime, waitTime;
 
     public RoundRobin(Task[] toHandle) {
-        /* TODO */
+        this.waitlist=new DoublyLinkedList<Task>();
+        this.finished=new DoublyLinkedList<Task>();
+        for (int y=0;y<toHandle.length;y++){
+            waitlist.add(toHandle[y]);
+        }
+        this.quantum=4;
+        this.burstTime=0;
+        this.waitTime=0;
+
     }
 
     public RoundRobin(int quantum, Task[] toHandle) {
-        /* TODO */
+        if (toHandle == null || quantum < 1 || toHandle.length<=0)
+            throw new IllegalArgumentException();
+        this.waitlist=new DoublyLinkedList<Task>();
+        this.finished=new DoublyLinkedList<Task>();
+        for (int y=0;y<toHandle.length;y++){
+            waitlist.add(toHandle[y]);
+        }
+        this.quantum=quantum;
+        this.burstTime=0;
+        this.waitTime=0;
     }
 
     public String handleAllTasks() {
-        /* TODO */
-        return null;
+        if (waitlist.isEmpty()){
+            return TASK_HANDLED;
+        }else {
+            Task replacement;
+            String result="";
+            while(waitlist.size()>0) {
+                System.out.println(waitlist);
+                for (int x = 0; x < this.quantum; x++) {
+                    if (waitlist.get(0).handleTask() == false) {
+                        break;
+                    }else {
+                        burstTime++;
+                    }
+                    waitTime=waitTime+(waitlist.size() - 1);
+                }
+                if (waitlist.get(0).isFinished()==true){
+                    finished.add(waitlist.get(0));
+                    waitlist.remove(0);
+                }else {
+                    replacement = waitlist.get(0);
+                    waitlist.add(replacement);
+                    waitlist.remove(0);
+                }
+            }
+            for (int y = 0; y < finished.size(); y++) {
+                result = result + finished.get(y).toString()+" -> ";
+            }
+            String record = "All tasks are handled within "+ burstTime+
+                    " units of" +
+                    " burst time and "+waitTime+" units of wait time." +
+                    " The tasks are finished in this order:\n"+result;
+            record=record.substring(0,record.length()-4);
+            return record;
+        }
     }
 
     /**

@@ -1,44 +1,51 @@
 /*
- * NAME: TODO
- * PID: TODO
+ * NAME: Gaoying Wang
+ * PID: A16131629
  */
 
 /**
  * TODO
  * @param <T> generic container
- * @author TODO
- * @since TODO
+ * @author Gaoying Wang
+ * @since ${2022-01-30}
  */
 public class DLLStack<T> {
 
     private DoublyLinkedList<T> stack;
 
     public DLLStack() {
-        /* TODO */
+        this.stack=new DoublyLinkedList<T>();
     }
 
     public int size() {
-        /* TODO */
-        return 0;
+        return this.stack.size();
     }
 
     public boolean isEmpty() {
-        /* TODO */
-        return false;
+        return this.stack.isEmpty();
     }
 
     public void push(T data) {
-        /* TODO */
+        if (data==null){
+            throw new IllegalArgumentException();
+        }
+        this.stack.add(data);
     }
 
     public T pop() {
-        /* TODO */
-        return null;
+        if (this.stack.size()==0){
+            return null;
+        }else {
+            return this.stack.remove(this.stack.size() - 1);
+        }
     }
 
     public T peek() {
-        /* TODO */
-        return null;
+        if (this.stack.size()==0){
+            return null;
+        }else {
+            return this.stack.get(this.stack.size() - 1);
+        }
     }
 
 }
