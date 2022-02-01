@@ -152,7 +152,10 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
      * Adds an element to a certain index in the list, shifting exist elements
      * create room. Does not accept null values.
      *
-     * TODO: Javadoc comments
+     * @param index the position to insert the element
+     * @param element data that needs to be added.
+     * @throws IndexOutOfBoundsException if the index is larger than the size
+     * @throws NullPointerException if the data is null
      */
     @Override
     public void add(int index, T element)
@@ -211,7 +214,8 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     /**
      * Determine if the list contains the data element anywhere in the list.
      *
-     * This method tests whether the list contains certain element.
+     * @param element the data that user is trying to search
+     * @return whether the data is in the list
      */
     @Override
     public boolean contains(Object element) {
@@ -226,11 +230,14 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     /**
      * Retrieves the element stored with a given index on the list.
      *
-     * This method returns the number of the targeted node.
+     * @param index the position of the element user is trying to get
+     * @return the data object of the node
+     * @throws IndexOutOfBoundsException when the index given is
+     * larger than the size
      */
     @Override
     public T get(int index) throws IndexOutOfBoundsException {
-        if (index>this.size() || this.size()==0){
+        if (index>this.size()-1 || this.size()==0){
             throw new IndexOutOfBoundsException();
         }
         return this.getNth(index).data;
@@ -239,10 +246,13 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     /**
      * Helper method to get the Nth node in our list
      *
-     * This method returns the targeted node.
+     * @param index the position of the node user is trying to get
+     * @return the target node
+     * @throws IndexOutOfBoundsException when the given index is larger
+     * than the size
      */
     private Node getNth(int index) {
-        if (index>this.size()){
+        if (index>this.size()-1){
             throw new IndexOutOfBoundsException();
         }
         Node thisNode = null;
@@ -263,7 +273,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     /**
      * Determine if the list empty
      *
-     * This method checks whether the list is empty.
+     * @return whether the list is empty
      */
     @Override
     public boolean isEmpty() {
@@ -277,7 +287,10 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     /**
      * Remove the element from position index in the list
      *
-     * This method remove the element at the index position.
+     * @param index the position of the node user is trying to remove
+     * @return the data of the removed node
+     * @throws IndexOutOfBoundsException when the given index is larger
+     * than the size
      */
     @Override
     public T remove(int index) throws IndexOutOfBoundsException {
@@ -306,8 +319,11 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     /**
      * Set the value of an element at a certain index in the list.
      *
-     * This method changes the number that the node at the
-     * index position points to.
+     * @param index the position of the target node
+     * @param element the element used for replacement
+     * @return the element that is replaced
+     * @throws IndexOutOfBoundsException when the given index is larger out of bound
+     * @throws NullPointerException when the given element is null
      */
     @Override
     public T set(int index, T element)
@@ -327,7 +343,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     /**
      * Retrieves the amount of elements that are currently on the list.
      *
-     * This method returns the size of the list.
+     * @return the number of elements in the list
      */
     @Override
     public int size() {
@@ -338,7 +354,7 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
      * String representation of this list in the form of:
      * "[(head) -> elem1 -> elem2 -> ... -> elemN -> (tail)]"
      *
-     * This method uses the string to show all the number it includes.
+     * @return the string representation of the list.
      */
     @Override
     public String toString() {
@@ -361,19 +377,32 @@ public class DoublyLinkedList<T> extends AbstractList<T> {
     /**
      * Remove nodes whose index is a multiple of base
      *
-     * TODO: javadoc comments
+     * @param base the base index of the multiplication
+     * @throws IllegalArgumentException when the base is smaller than 1
      */
     public void removeMultipleOf(int base) {
-        // TODO: complete implementation       
+        if (base<1){
+            throw new IllegalArgumentException();
+        }
+        for (int x=base-1;x<this.size();x=x+base){
+            this.remove(x);
+            x--;
+        }
     }
 
     /**
      * Swap the nodes between index [0, splitIndex] of two lists
      *
-     * TODO: javadoc comments
+     * @param other the other list for the operation
+     * @param splitIndex the index to stop the operation
      */
     public void swapSegment(DoublyLinkedList other, int splitIndex) {
-        // TODO: complete implementation
+        for (int x=0;x<=splitIndex;x++){
+            other.add(x,this.getNth(x).data);
+            this.add(x, (T) other.getNth(x+1).data);
+            other.remove(x+1);
+            this.remove(x+1);
+        }
     }
 
 }

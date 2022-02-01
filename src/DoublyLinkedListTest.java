@@ -106,8 +106,9 @@ public class DoublyLinkedListTest {
     public void getIOB(){
         DoublyLinkedList newlist=new DoublyLinkedList();
         newlist.add(1);
-        newlist.get(2);
+        newlist.get(1);
     }
+
 
     @org.junit.Test
     public void isEmpty() {
@@ -215,6 +216,82 @@ public class DoublyLinkedListTest {
         expected="[(head) -> 1 -> 9 -> 3 -> (tail)]";
         actual=newlist.toString();
         assertEquals(expected,actual);
+    }
+
+    @org.junit.Test(expected = IllegalArgumentException.class)
+    public void removeMultipleOfIAE(){
+        DoublyLinkedList newlist1=new DoublyLinkedList();
+        for (int x=1;x<20;x++){
+            newlist1.add(x);
+        }
+        newlist1.removeMultipleOf(0);
+    }
+
+    @org.junit.Test
+    public void removeMultipleOf(){
+        DoublyLinkedList newlist1=new DoublyLinkedList();
+        for (int x=1;x<20;x++){
+            newlist1.add(x);
+        }
+        newlist1.removeMultipleOf(5);
+        assertEquals("[(head) -> 1 -> 2 -> 3 -> " +
+                "4 -> 6 -> 7 -> 8 -> 9 -> 11 -> 12 -> 13 -> 14 -> " +
+                "16 -> 17 -> 18 -> 19 -> (tail)]", newlist1.toString());
+        DoublyLinkedList newlist2=new DoublyLinkedList();
+        for (int x=1;x<20;x++){
+            newlist2.add(x);
+        }
+        newlist2.removeMultipleOf(2);
+        assertEquals("[(head) -> 1 -> 3 -> " +
+                "5 -> 7 -> 9 -> 11 -> 13 -> 15 -> " +
+                "17 -> 19 -> (tail)]", newlist2.toString());
+        DoublyLinkedList newlist3=new DoublyLinkedList();
+        for (int x=1;x<20;x++){
+            newlist3.add(x);
+        }
+        newlist3.removeMultipleOf(1);
+        assertEquals("[(head) -> (tail)]", newlist3.toString());
+    }
+
+    @org.junit.Test
+    public void swapSegment(){
+        DoublyLinkedList newlist1=new DoublyLinkedList();
+        for (int x=1;x<20;x++){
+            newlist1.add(x);
+        }
+        DoublyLinkedList newlist2=new DoublyLinkedList();
+        for (int x=19;x>0;x--){
+            newlist2.add(x);
+        }
+        newlist1.swapSegment(newlist2,5);
+        assertEquals("[(head) -> 19 -> 18 -> 17 -> 16 -> 15 -> " +
+                "14 -> 7 -> 8 -> 9 -> 10 -> 11 -> 12 -> 13 -> 14 -> 15 -> " +
+                "16 -> 17 -> 18 -> 19 -> (tail)]",newlist1.toString());
+        assertEquals("[(head) -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 13 ->" +
+                " 12 -> 11 -> 10 -> 9 -> 8 -> 7 -> 6 -> 5 -> 4 -> 3 -> 2 -> 1 " +
+                "-> (tail)]",newlist2.toString());
+        newlist1.swapSegment(newlist2,5);
+        assertEquals("[(head) -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 ->" +
+                " 9 -> 10 -> 11 -> 12 -> 13 -> 14 -> 15 -> 16 -> 17 -> 18 -> 19" +
+                " -> (tail)]",newlist1.toString());
+        assertEquals("[(head) -> 19 -> 18 -> 17 -> 16 -> 15 -> 14 ->" +
+                " 13 -> 12 -> 11 -> 10 -> 9 -> 8 -> 7 -> 6 -> 5 -> 4 -> 3 -> 2" +
+                " -> 1 -> (tail)]",newlist2.toString());
+        newlist1.removeMultipleOf(1);
+        newlist2.removeMultipleOf(1);
+        for (int x=1;x<20;x++){
+            newlist1.add(x);
+        }
+        for (int x=19;x>0;x--){
+            newlist2.add(x);
+        }
+        newlist1.swapSegment(newlist2,10);
+        assertEquals("[(head) -> 19 -> 18 -> 17 -> 16 -> 15 -> 14 -> 13 ->" +
+                " 12 -> 11 -> 10 -> 9 -> 12 -> 13 -> 14 -> 15 -> 16 -> 17 -> 18 ->" +
+                " 19 -> (tail)]",newlist1.toString());
+        assertEquals("[(head) -> 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 ->" +
+                " 9 -> 10 -> 11 -> 8 -> 7 -> 6 -> 5 -> 4 -> 3 -> 2 ->" +
+                " 1 -> (tail)]",newlist2.toString());
     }
 
 }
